@@ -9,7 +9,7 @@ typedef struct Account {
 	int accountNumber;
 	char* customerName;
 	char* customerID;
-	float amount;
+	char* amount;
 } Account;
 
 
@@ -23,10 +23,15 @@ void main()
 	char* result[ACCOUNT_FIELDS];
 	char line[] = "1,Dor Bergel,563854125,1000";
 	
-	Account* try;
+	Account* try = malloc(sizeof(Account));
 	
 	split(line, delimiter, result);
+	try->accountNumber = (int)*result[0];
+	try->customerName = result[1];
+	try->customerID = result[2];
+	try->amount = result[3];
 	
+	printAccount(*try);
 }
 
 
@@ -34,7 +39,7 @@ void split(char *string, const char *delimiter, char* result[5]) {
     char *token = strtok(string, delimiter);
     int count = 0;
 	while (token != NULL) {
-        printf("%s\n", token);
+        //printf("%s\n", token);
 		result[count++] = token;
         token = strtok(NULL, delimiter);
     }
@@ -46,5 +51,5 @@ void printAccount(Account a)
 	printf("Account Number: %d\n", a.accountNumber);
 	printf("Customer Name: %s\n", a.customerName);
 	printf("Customer ID: %s\n", a.customerID);
-	printf("Amount: %f\n", (float)a.amount);
+	printf("Amount: %s\n", a.amount);
 }
