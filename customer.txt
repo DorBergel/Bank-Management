@@ -1,0 +1,4 @@
+1,Dor Bergel,563854125,1000
+2,Jhon Travolta,352674589,1235
+3,Denzel Washingthon,652387596,6565
+4,Samuel L. Jackson,174238556,65632
