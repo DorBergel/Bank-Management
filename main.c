@@ -1,13 +1,17 @@
+/*
+This code has written by Dor Bergel. 
+This code expect valid input and not handeling with wrong types.
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <conio.h>
 
 // Constatnts values
 #define LINE_LENGTH 100
 #define ACCOUNT_FIELDS 4
-#define BUFFER_SIZE 20
-#define _CRT_SECURE_NO_WARNINGS
-#define _CRT_NONSTDC_NO_DEPRECATE
+#define BUFFER_SIZE 100
 
 
 typedef struct Account {
@@ -27,6 +31,7 @@ void saveAccounts(Account** accountsArray, int accountCount);
 void removeAccount(Account** accountsArray, int* accountCount);
 void editAccount(Account** accountsArray, int accountCount);
 void transact(Account** accountsArray, int accountsCount);
+void clearBuffer();
 
 int main()
 {
@@ -55,40 +60,52 @@ int main()
         switch (choice)
         {
         case 1:
+			// Print all accounts case
             system("cls");
             printAll(&accountsArray, accountsCount);
             printf("\n\n\n\n");
-            
+			printf("Press any key to continue\n");
+			getch();
             continue;
         case 2:
+			// Add new account case
             system("cls");
             addAccount(&accountsArray, &accountsCount);
             printf("\n\n\n\n");
-            
+            printf("Press any key to continue\n");
+			getch();
             continue;
         case 3:
+			// Edit existing account case
             system("cls");
             editAccount(&accountsArray, accountsCount);
             printf("\n\n\n\n");
-            
+            printf("Press any key to continue\n");
+			getch();
             continue;
         case 4:
+			// Remove existing account case
             system("cls");
             removeAccount(&accountsArray, &accountsCount);
             printf("\n\n\n\n");
-            
+            printf("Press any key to continue\n");
+			getch();
             continue;
         case 5:
+			// Make new transaction case
             system("cls");
             transact(&accountsArray, accountsCount);
             printf("\n\n\n\n");
-           
+			printf("Press any key to continue\n");
+			getch();
             continue;
         case 6:
+			// Exit
             system("cls");
             saveAccounts(&accountsArray, accountsCount);
             printf("\n\n\n\n");
-            
+            printf("Press any key to continue\n");
+			getch();
             continue;
         default:
             break;
@@ -101,6 +118,11 @@ int main()
 
 void loadAccounts(Account** accountsArray, int accountsCount)
 {
+	/*
+	This function load the existing customer from txt file by specific pattern
+	Input: accountsArray, accountsCount
+	Output: None, update the accountsArray
+	*/
     int i;
     FILE* fp = fopen("customer.txt", "r");
     char line[LINE_LENGTH];
@@ -122,6 +144,12 @@ void loadAccounts(Account** accountsArray, int accountsCount)
 }
 
 int lineCount() {
+	
+	/*
+	Count how much line(=accounts) there is in customer.txt
+	Input: None
+	Output: linesCount (=accountsCount)
+	*/
     char line[LINE_LENGTH];
     int linesC = 0;
     FILE* fp = fopen("customer.txt", "r");
@@ -135,6 +163,12 @@ int lineCount() {
 
 void printAccount(Account a)
 {
+	
+	/*
+	Print specific account - used for debug
+	Input: Account
+	Output: None
+	*/
     printf("Account Number: %s\n", a.accountNumber);
     printf("Customer Name: %s\n", a.customerName);
     printf("Customer ID: %s\n", a.customerID);
@@ -144,6 +178,10 @@ void printAccount(Account a)
 
 void printAll(Account** accountsArray, int accountsCount)
 {
+	
+	/*
+	Print all accounts
+	*/
     for (int i = 0; i < accountsCount; i++) {
         printAccount((*accountsArray)[i]);
     }
@@ -151,6 +189,12 @@ void printAll(Account** accountsArray, int accountsCount)
 
 void addAccount(Account** accountsArray, int* accountsCount)
 {
+	
+	/*
+	Ask for necesserry details for create new account
+	Input: accountsArray, accountsCount
+	Output: None (just update the accountsArray)
+	*/
     (*accountsCount)++;
     *accountsArray = realloc(*accountsArray, sizeof(Account) * (*accountsCount));
 
@@ -161,17 +205,27 @@ void addAccount(Account** accountsArray, int* accountsCount)
 
     printf("Please enter new account number: ");
     scanf("%s", (*accountsArray)[(*accountsCount) - 1].accountNumber);
+	fseek(stdin,0,SEEK_END);
     printf("Please enter new customer name: ");
     scanf("%s", (*accountsArray)[(*accountsCount) - 1].customerName);
+	fseek(stdin,0,SEEK_END);
     printf("Please enter new customer ID: ");
     scanf("%s", (*accountsArray)[(*accountsCount) - 1].customerID);
+	fseek(stdin,0,SEEK_END);
     printf("Please enter new customer amount: ");
     scanf("%s", (*accountsArray)[(*accountsCount) - 1].amount);
+	fseek(stdin,0,SEEK_END);
 
 }
 
 void saveAccounts(Account** accountsArray, int accountCount)
 {
+	
+	/*
+	Save the current accountsArray to customer.txt in the readable pattern
+	Input: accountsArray, accountsCount
+	Output: None
+	*/
     FILE* fp = fopen("customer.txt", "w");
     int i;
 
@@ -183,6 +237,12 @@ void saveAccounts(Account** accountsArray, int accountCount)
 
 void removeAccount(Account** accountsArray, int* accountCount)
 {
+	
+	/*
+	Remove account by his number from the accountsArray
+	Input: accountsArray, accountsCount
+	Output: None
+	*/
     int i;
     char delAccount[BUFFER_SIZE];
     int flag = 0;
@@ -215,6 +275,11 @@ void removeAccount(Account** accountsArray, int* accountCount)
 
 void editAccount(Account** accountsArray, int accountCount)
 {
+	/*
+	Edit existing account detailes
+	Input: accountsArray, accountsCount
+	Output: None
+	*/
     int i;
     char edAccount[BUFFER_SIZE];
     char tempString[BUFFER_SIZE];
@@ -259,6 +324,12 @@ void editAccount(Account** accountsArray, int accountCount)
 
 void transact(Account** accountsArray, int accountsCount)
 {
+	
+	/*
+	Make new transaction between to accounts
+	Input: accountsArray, accountsCount
+	Output: None
+	*/
     int i;
     char transmit[BUFFER_SIZE];
     char recieve[BUFFER_SIZE];
